@@ -114,15 +114,15 @@ def increaselikes(request,id):
         post.save() 
     return redirect("index")
 
-
+@login_required(login_url='/signin/')
 def post(request,id):
     post = Post.objects.get(id=id)
-    
     return render(request,"post-details.html",{
         "user":request.user,
         'post':Post.objects.get(id=id),
         'recent_posts':Post.objects.all().order_by("-id"),
         'media_url':settings.MEDIA_URL,
+        'total_view': View.objects.filter(post=post).count(),
         'comments':Comment.objects.filter(post_id = post.id),
         'total_comments': len(Comment.objects.filter(post_id = post.id))
     })
