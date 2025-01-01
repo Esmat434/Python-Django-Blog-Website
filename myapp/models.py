@@ -19,7 +19,17 @@ class Post(models.Model):
     def __str__(self):
         return str( self.postname)
     
-    
+
+class View(models.Model):
+    view = models.IntegerField(default=0)
+    client_ip = models.GenericIPAddressField()
+    path = models.CharField(max_length=200,default='')
+    created_time = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.client_ip} - {self.path}"
+
 class Comment(models.Model):
     content = models.CharField(max_length=200)
     time = models.CharField(default=time,max_length=100, blank=True)
@@ -35,3 +45,5 @@ class Contact(models.Model):
     email = models.EmailField(max_length=600)
     subject = models.CharField(max_length=1000)
     message = models.CharField(max_length=10000, blank=True)
+    def __str__(self):
+        return self.name
